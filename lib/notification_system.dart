@@ -1,4 +1,4 @@
-library notification_system;
+library;
 
 // API
 export 'src/api/notification_service.dart';

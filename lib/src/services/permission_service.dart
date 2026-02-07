@@ -27,6 +27,7 @@ class PermissionService {
     final alreadyAsked = _prefs.getBool(_kNotificationPermissionAsked) ?? false;
 
     if (!alreadyAsked) {
+      if (!context.mounted) return false;
       // Show custom dialog
       final shouldAsk = await showDialog<bool>(
         context: context,
@@ -35,6 +36,7 @@ class PermissionService {
 
       if (shouldAsk == true) {
         await _prefs.setBool(_kNotificationPermissionAsked, true);
+        if (!context.mounted) return false;
         final result = await Permission.notification.request();
         return result.isGranted;
       } else {

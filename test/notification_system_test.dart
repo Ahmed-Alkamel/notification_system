@@ -3,10 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notification_system/notification_system.dart';
 
 void main() {
-  test('adds one to input values', () {
-    // final calculator = Calculator();
-    // expect(calculator.addOne(2), 3);
-    // expect(calculator.addOne(-7), -6);
-    // expect(calculator.addOne(0), 1);
+  test('verify exports', () {
+    // Just verify that the library imports without error
+    // ignore: unnecessary_type_check
+    expect(NotificationData is Type, isTrue);
   });
 }

@@ -42,5 +42,5 @@ class FirebaseNotificationService {
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you need to access other services here, make sure they are initialized
   // or use a separate entry point logic if complex.
-  print("Handling a background message: ${message.messageId}");
+  // print("Handling a background message: ${message.messageId}");
 }

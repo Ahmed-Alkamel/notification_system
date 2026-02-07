@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 abstract class INotificationService {
   Future<void> initialize();
   Future<void> requestPermission();
