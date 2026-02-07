@@ -1,13 +1,44 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:injectable/injectable.dart';
+
+import '../api/notification_service.dart';
 import '../impl/local_notification_service.dart';
 
-@singleton
-class FirebaseNotificationService {
+class FirebaseNotificationService implements INotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final LocalNotificationService _localNotificationService;
 
   FirebaseNotificationService(this._localNotificationService);
+
+  @override
+  Future<void> requestPermission() async {
+    await _firebaseMessaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    // print('User granted permission: ${settings.authorizationStatus}');
+  }
+
+  @override
+  Future<void> showNotification({
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    // FCM doesn't support manually showing a notification from the client side in the same way.
+    // This method might be used if we want to simulate an FCM message?
+    // For now, let's delegate to local notification service as a fallback or bridge.
+    await _localNotificationService.showNotification(
+      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title: title,
+      body: body,
+      payload: payload,
+    );
+  }
 
   Future<void> initialize() async {
     // Force initialization of local notifications if not already done,

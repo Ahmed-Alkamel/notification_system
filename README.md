@@ -1,5 +1,7 @@
 # Notification System
 
+[![pub package](https://img.shields.io/pub/v/notification_system.svg)](https://pub.dev/packages/notification_system)
+
 A comprehensive, production-ready notification handling package for Flutter. It seamlessly integrates Firebase Cloud Messaging (FCM), Local Notifications, and In-App messaging into a unified API. Built with clean architecture principles, it offers robust permission handling with caching and localization support.
 
 ## 🚀 Features
@@ -31,15 +33,14 @@ A comprehensive, production-ready notification handling package for Flutter. It 
   - **Dependency Injection**: Powered by `injectable` and `get_it`.
   - **Immutability**: Data models generated using `freezed`.
   - **Type Safety**: Strictly typed interfaces for all services.
+  - **Compatibility**: Uses namespaced `SharedPreferences` to avoid conflicts with your app's existing dependencies.
 
 ## 📦 Installation
-
-This package relies on several dependencies. Ensure your `pubspec.yaml` is up to date.
-
-```yaml
-dependencies:
-  notification_system: path/to/this/package
-```
+ 
+ ```yaml
+ dependencies:
+   notification_system: ^0.0.1
+ ```
 
 ## 🔧 Setup
 
@@ -50,7 +51,7 @@ Follow the official guides for [Firebase Messaging](https://firebase.google.com/
 - `Info.plist` (APNS permissions)
 
 ### 2. Initialize the Notification System
-In your `main.dart`, initialize the dependency injection before running the app.
+In your `main.dart`, initialize the system before running the app.
 
 ```dart
 import 'package:flutter/material.dart';
@@ -59,59 +60,35 @@ import 'package:notification_system/notification_system.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 1. Initialize DI
-  await configureDependencies();
+  // 1. Initialize System
+  await NotificationSystem.instance.initialize(
+    style: const NotificationStyle(
+       successColor: Colors.teal,
+    ),
+  );
 
   runApp(const MyApp());
 }
 ```
 
-### 3. Initialize Services
-At the start of your app (e.g., in a `SplashScreen` or `HomeWrapper`), initialize the Firebase service.
+### 3. Initialize Services (Optional)
+The system initializes basic services automatically. You can access them directly:
 
 ```dart
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    _initNotifications();
-  }
-
-  Future<void> _initNotifications() async {
-    final firebaseService = getIt<FirebaseNotificationService>();
-    await firebaseService.initialize();
-    
-    // Optional: Print Token
-    final token = await firebaseService.getToken();
-    print("FCM Token: $token");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
-    );
-  }
-}
+final firebaseService = NotificationSystem.instance.firebaseNotificationService;
+// Use firebaseService...
 ```
 
 ## 📖 Usage
 
 ### Requesting Permissions
-Use `PermissionService` to handle the flow. This will check cache, show the custom dialog if needed, and then request native permissions.
+User `NotificationSystem.instance.permissionService` to handle the flow.
 
 ```dart
 import 'package:notification_system/notification_system.dart';
 
 Future<void> checkPermissions(BuildContext context) async {
-  final permissionService = getIt<PermissionService>();
+  final permissionService = NotificationSystem.instance.permissionService;
   
   // Returns true if granted (either previously or just now)
   bool granted = await permissionService.requestNotificationPermission(context);
@@ -125,13 +102,13 @@ Future<void> checkPermissions(BuildContext context) async {
 ```
 
 ### Showing In-App Messages
-Trigger global in-app notifications from anywhere in your code using `GeneralNotificationService`.
+Trigger global in-app notifications from anywhere.
 
 ```dart
 import 'package:notification_system/notification_system.dart';
 
 void confirmOrder() {
-  final generalService = getIt<GeneralNotificationService>();
+  final generalService = NotificationSystem.instance.generalNotificationService;
 
   // Show Success
   generalService.showSuccess("Order #1234 placed successfully!");
@@ -144,10 +121,17 @@ void confirmOrder() {
 }
 ```
 
-## 🧩 Modifying the Package
+## 🎨 Customization
+You can pass a `NotificationStyle` object to `.initialize()` to customize:
+- **Colors**: `successColor`, `errorColor`, `warningColor`, `infoColor`.
+- **Text Styles**: `titleStyle`, `bodyStyle`.
+- **Permission Dialog**: Title, Body, and Button texts.
 
-If you change any `@injectable` or `@freezed` annotated classes, run the build runner to regenerate code:
-
-```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+```dart
+await NotificationSystem.instance.initialize(
+  style: NotificationStyle(
+    successColor: Colors.deepPurple,
+    errorColor: Colors.deepOrange,
+  ),
+);
 ```

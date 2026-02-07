@@ -6,6 +6,6 @@ void main() {
   test('verify exports', () {
     // Just verify that the library imports without error
     // ignore: unnecessary_type_check
-    expect(NotificationData is Type, isTrue);
+    expect(NotificationSystem.instance, isNotNull);
   });
 }

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:injectable/injectable.dart';
+
+import '../models/notification_style.dart';
 import '../ui/dialogs/permission_dialog.dart';
 
-@singleton
 class PermissionService {
   static const String _kNotificationPermissionAsked =
       'notification_permission_asked';
   final SharedPreferences _prefs;
+  final NotificationStyle _style;
 
-  PermissionService(this._prefs);
+  PermissionService(this._prefs, {NotificationStyle? style})
+    : _style = style ?? const NotificationStyle();
 
   Future<bool> requestNotificationPermission(BuildContext context) async {
     final status = await Permission.notification.status;
@@ -31,7 +33,7 @@ class PermissionService {
       // Show custom dialog
       final shouldAsk = await showDialog<bool>(
         context: context,
-        builder: (context) => const PermissionDialog(),
+        builder: (context) => PermissionDialog(style: _style),
       );
 
       if (shouldAsk == true) {
