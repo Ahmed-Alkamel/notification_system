@@ -1,3 +1,11 @@
+## 0.0.2
+
+*   Refactor: Removed `get_it` and `injectable` dependencies.
+*   Feature: Added `NotificationSystem` singleton for manual dependency management.
+*   Feature: Added `NotificationStyle` for customizing colors and dialogs.
+*   Fix: Resolved `SharedPreferences` conflicts by namespacing.
+*   Docs: Updated usage guide and examples.
+
 ## 0.0.1
 
 *   Initial release.
