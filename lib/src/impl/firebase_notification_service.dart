@@ -3,10 +3,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../api/notification_service.dart';
 import '../impl/local_notification_service.dart';
 
+/// Service for handling Firebase Cloud Messaging (FCM).
+///
+/// This service manages:
+/// - Requesting FCM permissions (handled via [requestPermission]).
+/// - retrieving the FCM token ([getToken]).
+/// - Handling foreground messages and bridging them to [LocalNotificationService].
+/// - Handling background messages.
 class FirebaseNotificationService implements INotificationService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final LocalNotificationService _localNotificationService;
 
+  /// Creates a [FirebaseNotificationService] dependent on [LocalNotificationService] for foreground display.
   FirebaseNotificationService(this._localNotificationService);
 
   @override

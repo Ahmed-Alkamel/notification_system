@@ -20,14 +20,31 @@ import 'src/impl/local_notification_service.dart';
 import 'src/models/notification_style.dart';
 import 'src/services/permission_service.dart';
 
+/// The central access point for the Notification System.
+///
+/// This singleton manages the initialization and access to various notification services:
+/// - [PermissionService]: Handles notification permissions.
+/// - [LocalNotificationService]: Manages local system notifications.
+/// - [FirebaseNotificationService]: Handles FCM (Firebase Cloud Messaging).
+/// - [GeneralNotificationService]: Displays in-app notifications (toasts/overlays).
 class NotificationSystem {
   NotificationSystem._();
+
+  /// The singleton instance of [NotificationSystem].
   static final NotificationSystem instance = NotificationSystem._();
 
   // Services
+
+  /// Service for requesting and checking notification permissions.
   late final PermissionService permissionService;
+
+  /// Service for showing local notifications.
   late final LocalNotificationService localNotificationService;
+
+  /// Service for handling Firebase Cloud Messaging.
   late final FirebaseNotificationService firebaseNotificationService;
+
+  /// Service for showing in-app notifications.
   late final GeneralNotificationService generalNotificationService;
 
   bool _isInitialized = false;
@@ -68,6 +85,7 @@ class NotificationSystem {
 
     _isInitialized = true;
   }
-  static Future<String?> get fcmToken =>  instance.firebaseNotificationService.getToken();
 
+  static Future<String?> get fcmToken =>
+      instance.firebaseNotificationService.getToken();
 }

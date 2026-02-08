@@ -5,15 +5,35 @@ import 'package:permission_handler/permission_handler.dart';
 import '../models/notification_style.dart';
 import '../ui/dialogs/permission_dialog.dart';
 
+/// Service responsible for handling notification permissions.
+///
+/// This service checks for existing permissions, shows a rationale dialog if needed (configured via [NotificationStyle]),
+/// and requests native permissions from the OS.
+/// It uses [SharedPreferences] to cache whether the user has already been asked, to avoid spamming.
 class PermissionService {
   static const String _kNotificationPermissionAsked =
       'notification_permission_asked';
   final SharedPreferences _prefs;
   final NotificationStyle _style;
 
+  /// Creates a [PermissionService] with the given preferences and style.
   PermissionService(this._prefs, {NotificationStyle? style})
     : _style = style ?? const NotificationStyle();
 
+  /// Requests notification permissions from the user.
+  ///
+  /// Returns `true` if permission is granted, `false` otherwise.
+  ///
+  /// Flow:
+  /// 1. Check current status. If granted, return true.
+  /// 2. If permanently denied, return false (user must go to settings).
+  /// 3. Check if we already asked the user (cached in prefs).
+  /// 4. If not asked:
+  ///    - Show rationale dialog (if configured).
+  ///    - If user agrees in dialog, request native permission.
+  ///    - If user cancels, mark as asked and return false.
+  /// 5. If already asked:
+  ///    - Request native permission directly (OS might not show prompt if denied previously).
   Future<bool> requestNotificationPermission(BuildContext context) async {
     final status = await Permission.notification.status;
 

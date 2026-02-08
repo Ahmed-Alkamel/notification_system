@@ -1,9 +1,14 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+/// Service for managing local push notifications.
+///
+/// Uses `flutter_local_notifications` to show notifications in the system tray / notification center.
+/// Configures default channels for Android and iOS settings.
 class LocalNotificationService {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  /// Initializes the local notification plugin with platform-specific settings.
   Future<void> initialize() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -29,6 +34,12 @@ class LocalNotificationService {
     );
   }
 
+  /// Displays a local notification immediately.
+  ///
+  /// [id] Unique identifier for the notification.
+  /// [title] The title of the notification.
+  /// [body] The body text of the notification.
+  /// [payload] Optional data string to pass with the notification.
   Future<void> showNotification({
     required int id,
     required String title,
