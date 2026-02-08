@@ -30,17 +30,21 @@ A comprehensive, production-ready notification handling package for Flutter. It 
   - Automatically detects system locale for the permission dialog.
 
 - **🏗️ Solid Architecture**:
-  - **Dependency Injection**: Powered by `injectable` and `get_it`.
-  - **Immutability**: Data models generated using `freezed`.
-  - **Type Safety**: Strictly typed interfaces for all services.
   - **Compatibility**: Uses namespaced `SharedPreferences` to avoid conflicts with your app's existing dependencies.
 
 ## 📦 Installation
  
  ```yaml
  dependencies:
-   notification_system: ^0.0.1
+   notification_system: ^0.0.4
  ```
+
+## 📱 Example
+
+Check out the [example app](example/lib/main.dart) for a complete implementation demonstrating:
+- Customizing the notification style.
+- Requesting permissions with a rationale dialog.
+- Handling local and in-app notifications.
 
 ## 🔧 Setup
 

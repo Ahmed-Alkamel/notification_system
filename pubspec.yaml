@@ -1,6 +1,6 @@
 name: notification_system
 description: A comprehensive notification handling package for Flutter, supporting Firebase, Local Notifications, and In-App messaging.
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/Ahmed-Alkamel/notification_system
 repository: https://github.com/Ahmed-Alkamel/notification_system
 issue_tracker: https://github.com/Ahmed-Alkamel/notification_system/issues

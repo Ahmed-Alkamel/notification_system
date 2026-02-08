@@ -1,3 +1,8 @@
+## 0.0.4
+
+*   Docs: Added comprehensive Dartodc documentation for all public APIs.
+*   Example: Added a complete example application in `example/` directory.
+
 ## 0.0.3
 
 *   Feature: Added `getter fcmToken` for easy access.
