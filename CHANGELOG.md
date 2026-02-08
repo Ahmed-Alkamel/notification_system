@@ -1,3 +1,7 @@
+## 0.0.3
+
+*   Feature: Added `getter fcmToken` for easy access.
+
 ## 0.0.2
 
 *   Refactor: Removed `get_it` and `injectable` dependencies.

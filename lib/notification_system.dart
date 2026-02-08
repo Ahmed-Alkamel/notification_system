@@ -68,4 +68,6 @@ class NotificationSystem {
 
     _isInitialized = true;
   }
+  static Future<String?> get fcmToken =>  instance.firebaseNotificationService.getToken();
+
 }
